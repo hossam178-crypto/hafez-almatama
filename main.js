@@ -1,0 +1,27 @@
+const { app, BrowserWindow, dialog } = require('electron');
+const path = require('path');
+
+function createWindow() {
+  const win = new BrowserWindow({
+    width: 1440,
+    height: 900,
+    minWidth: 900,
+    minHeight: 650,
+    autoHideMenuBar: true,
+    backgroundColor: '#f4f7f5',
+    webPreferences: {
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true
+    }
+  });
+  win.loadFile(path.join(__dirname, 'index.html'));
+  win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
+}
+
+app.whenReady().then(createWindow);
+app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
+app.on('activate', () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); });
+process.on('uncaughtException', (err) => {
+  dialog.showErrorBox('خطأ في نظام حافز المتمة', String(err && err.stack || err));
+});
