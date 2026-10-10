@@ -23,7 +23,7 @@ jobs:
         run: npm install
 
       - name: Build Windows 32-bit installer
-        run: npm run build:win32
+        run: npm run build:win32 -- --publish never
 
       - name: Upload 32-bit installer
         uses: actions/upload-artifact@v4
